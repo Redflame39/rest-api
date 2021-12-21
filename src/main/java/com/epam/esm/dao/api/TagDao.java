@@ -14,8 +14,6 @@ public interface TagDao<T extends Entity, K> {
 
     boolean create(T t) throws DaoException;
 
-    boolean update(K updateId, T replacement) throws DaoException;
-
     boolean delete(K deleteId) throws DaoException;
 
 }

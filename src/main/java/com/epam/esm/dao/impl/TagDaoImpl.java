@@ -38,11 +38,6 @@ public class TagDaoImpl implements TagDao<Tag, Long> {
     }
 
     @Override
-    public boolean update(Long updateId, Tag replacement) throws DaoException {
-        return false;
-    }
-
-    @Override
     public boolean delete(Long deleteId) throws DaoException {
         return false;
     }
