@@ -1,7 +1,6 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.api.TagDao;
-import com.epam.esm.exception.ServiceException;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.service.api.TagService;
 import lombok.extern.log4j.Log4j2;
@@ -23,22 +22,22 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public boolean create(Tag tag) throws ServiceException {
+    public boolean create(Tag tag) {
         return false;
     }
 
     @Override
-    public List<Tag> findAll() throws ServiceException {
+    public List<Tag> findAll() {
         return null;
     }
 
     @Override
-    public Optional<Tag> findById() throws ServiceException {
+    public Optional<Tag> findById() {
         return Optional.empty();
     }
 
     @Override
-    public Tag delete(Tag deleteId) throws ServiceException {
+    public Tag delete(Tag deleteId) {
         return null;
     }
 }

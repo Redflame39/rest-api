@@ -5,7 +5,7 @@ import com.epam.esm.model.entity.Entity;
 import java.util.List;
 import java.util.Optional;
 
-public interface TagDao<T extends Entity, K> {
+public interface CertificateDao<T extends Entity, K> {
 
     List<T> findAll();
 
@@ -13,6 +13,7 @@ public interface TagDao<T extends Entity, K> {
 
     boolean create(T t);
 
-    boolean delete(K deleteId);
+    boolean update(K updateId, T replacement);
 
+    boolean delete(K deleteId);
 }

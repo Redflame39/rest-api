@@ -1,14 +1,13 @@
-package com.epam.esm.model.entity;
+package com.epam.esm.model.dto;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import com.epam.esm.model.entity.Tag;
+import lombok.NonNull;
+import lombok.Value;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Value
-@SuperBuilder
-public class GiftCertificate extends Entity {
+public class CertificateDto {
 
     double price;
 
@@ -28,5 +27,4 @@ public class GiftCertificate extends Entity {
 
     @NonNull
     List<Tag> tags;
-
 }
