@@ -10,8 +10,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Tag extends Entity {
 
-    int id;
-
     @NonNull
     String name;
 

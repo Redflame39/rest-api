@@ -7,7 +7,11 @@ X
 gradlew,5\b\5bbfa66edb4db3c7c33c5181f43510990d3307f9
 ?
 settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
-c
-3src/main/java/com/epam/esm/model/entity/Entity.java,e\7\e7f7062b15afabd8ece7841ebeea4b592908bc03
-`
-0src/main/java/com/epam/esm/model/entity/Tag.java,7\e\7e2c8987d1193293b5ff4d11884105259aca0ba6
+p
+@src/main/java/com/epam/esm/controller/CertificateController.java,e\9\e935573cbcb99f2b945a1a8a3e2b0a3678d5382a
+n
+>src/main/java/com/epam/esm/service/api/CertificateService.java,9\6\9624a47d272c6e99044adae2273efe93d1c60665
+s
+Csrc/main/java/com/epam/esm/service/impl/CertificateServiceImpl.java,3\9\390c6c5caaf2763e7b4651ba7244e84e37748d91
+[
++src/main/java/com/epam/esm/Application.java,9\d\9dbf47b0470f7a5ae757ad1cedf459dd68ee68a9

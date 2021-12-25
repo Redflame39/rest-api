@@ -14,19 +14,14 @@ public class Certificate extends Entity {
 
     int duration;
 
-    @NonNull
     String name;
 
-    @NonNull
     String description;
 
-    @NonNull
     String createDate;
 
-    @NonNull
     String lastUpdateDate;
 
-    @NonNull
     List<Tag> tags;
 
 }

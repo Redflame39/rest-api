@@ -1,5 +1,6 @@
 package com.epam.esm.dao.impl;
 
+import com.epam.esm.dao.TagQuery;
 import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.model.entity.Tag;
 import lombok.extern.log4j.Log4j2;
@@ -23,21 +24,37 @@ public class TagDaoImpl implements TagDao<Tag, Long> {
 
     @Override
     public List<Tag> findAll() {
-        return null;
+        return jdbcTemplate.query(TagQuery.SQL_FIND_ALL, TAG_MAPPER);
     }
 
     @Override
     public Optional<Tag> findById(Long id) {
-        return Optional.empty();
+        Tag result = jdbcTemplate.queryForObject(TagQuery.SQL_FIND_ID, TAG_MAPPER, id);
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public Optional<Tag> findByName(String name) {
+        Tag result = jdbcTemplate.queryForObject(TagQuery.SQL_FIND_NAME, TAG_MAPPER, name);
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public List<Tag> findByCertificateId(Long id) {
+        return jdbcTemplate.query(TagQuery.SQL_FIND_CERTIFICATE_ID, TAG_MAPPER, id);
     }
 
     @Override
     public boolean create(Tag tag) {
-        return false;
+        int affectedRows = jdbcTemplate.update(TagQuery.SQL_CREATE, tag.getName());
+
+        return affectedRows > 0;
     }
 
     @Override
     public boolean delete(Long deleteId) {
-        return false;
+        int affectedRows = jdbcTemplate.update(TagQuery.SQL_DELETE, deleteId);
+
+        return affectedRows > 0;
     }
 }

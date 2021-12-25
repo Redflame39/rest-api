@@ -7,6 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Getter
 public abstract class Entity {
 
-    protected int id;
+    protected Long id;
 
 }

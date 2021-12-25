@@ -1,9 +1,11 @@
 plugins {
-    id 'war'
+    id 'java'
 }
 
 group 'com.epam'
 version '1.0-SNAPSHOT'
+
+apply plugin: 'war'
 
 repositories {
     mavenCentral()
