@@ -2,8 +2,8 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.TagQuery;
 import com.epam.esm.dao.api.TagDao;
+import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.model.entity.Tag;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,9 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Log4j2
 @Repository
-public class TagDaoImpl implements TagDao<Tag, Long> {
+public class TagDaoImpl implements TagDao<Long> {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -45,7 +44,7 @@ public class TagDaoImpl implements TagDao<Tag, Long> {
     }
 
     @Override
-    public boolean create(Tag tag) {
+    public boolean create(TagDto tag) {
         int affectedRows = jdbcTemplate.update(TagQuery.SQL_CREATE, tag.getName());
 
         return affectedRows > 0;
@@ -57,4 +56,5 @@ public class TagDaoImpl implements TagDao<Tag, Long> {
 
         return affectedRows > 0;
     }
+
 }

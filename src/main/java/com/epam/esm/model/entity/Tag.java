@@ -1,16 +1,14 @@
 package com.epam.esm.model.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
+import lombok.Builder;
 import lombok.Value;
-import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
 @Value
-@SuperBuilder
-public class Tag extends Entity {
+@Builder
+public class Tag {
 
-    @NonNull
+    Long id;
+
     String name;
 
 }

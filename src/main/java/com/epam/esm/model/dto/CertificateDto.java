@@ -1,30 +1,26 @@
 package com.epam.esm.model.dto;
 
 import com.epam.esm.model.entity.Tag;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.Data;
 
 import java.util.List;
 
-@Value
+@Data
 public class CertificateDto {
+
+    Long id;
 
     double price;
 
     int duration;
 
-    @NonNull
     String name;
 
-    @NonNull
     String description;
 
-    @NonNull
     String createDate;
 
-    @NonNull
     String lastUpdateDate;
 
-    @NonNull
-    List<Tag> tags;
+    List<TagDto> tags;
 }

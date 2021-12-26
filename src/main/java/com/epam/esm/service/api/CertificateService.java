@@ -1,5 +1,6 @@
 package com.epam.esm.service.api;
 
+import com.epam.esm.model.dto.CertificateDto;
 import com.epam.esm.model.entity.Certificate;
 
 import java.util.List;
@@ -7,13 +8,13 @@ import java.util.Optional;
 
 public interface CertificateService {
 
-    boolean create(Certificate giftCertificate);
+    boolean create(CertificateDto certificate);
 
     List<Certificate> findAll();
 
-    Optional<Certificate> findById();
+    Optional<Certificate> findById(Long id);
 
-    Certificate update(Long updateId, Certificate replacement);
+    Certificate update(Long updateId, CertificateDto replacement);
 
     Certificate delete(Long deleteId);
 

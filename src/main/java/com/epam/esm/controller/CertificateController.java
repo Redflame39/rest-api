@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class CertificateController {
 
     @PostMapping
     // TODO: replace return type void with another return type
-    public void create(@RequestBody Certificate certificate) { // TODO: replace Certificate with CertificateDTO
+    public void create(@RequestBody CertificateDto certificate) { // TODO: replace Certificate with CertificateDTO
         // TODO: implement
     }
 

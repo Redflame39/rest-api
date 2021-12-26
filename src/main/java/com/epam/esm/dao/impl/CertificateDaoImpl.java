@@ -2,8 +2,8 @@ package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.CertificateQuery;
 import com.epam.esm.dao.api.CertificateDao;
+import com.epam.esm.model.dto.CertificateDto;
 import com.epam.esm.model.entity.Certificate;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,9 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Log4j2
 @Repository
-public class CertificateDaoImpl implements CertificateDao<Certificate, Long> {
+public class CertificateDaoImpl implements CertificateDao<Long> {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -34,7 +33,7 @@ public class CertificateDaoImpl implements CertificateDao<Certificate, Long> {
     }
 
     @Override
-    public boolean create(Certificate certificate) {
+    public boolean create(CertificateDto certificate) {
         int affectedRows = jdbcTemplate.update(CertificateQuery.SQL_CREATE,
                 certificate.getName(),
                 certificate.getDescription(),
@@ -47,7 +46,7 @@ public class CertificateDaoImpl implements CertificateDao<Certificate, Long> {
     }
 
     @Override
-    public boolean update(Long updateId, Certificate replacement) {
+    public boolean update(Long updateId, CertificateDto replacement) {
         int affectedRows = jdbcTemplate.update(CertificateQuery.SQL_UPDATE,
                 replacement.getName(),
                 replacement.getDescription(),
