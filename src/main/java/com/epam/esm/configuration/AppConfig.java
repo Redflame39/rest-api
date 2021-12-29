@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 @PropertySource("classpath:db/config.properties")
 public class AppConfig {
 
-    @Value("${db.url}")
+    /*@Value("${db.url}")
     private String url;
 
     @Value("${db.user}")
@@ -46,6 +46,6 @@ public class AppConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-    }
+    }*/
 
 }

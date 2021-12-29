@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="rest-api:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="com.epam" external.system.module.type="sourceSet" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="web" name="Web Gradle : rest-api-1.0-SNAPSHOT.war">
+      <configuration>
+        <webroots>
+          <root url="file://$MODULE_DIR$/../../src/main/webapp" relative="/" />
+        </webroots>
+      </configuration>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="AppContext" removed="false">
+          <file>file://$MODULE_DIR$/../../src/main/java/com/epam/esm/configuration/AppConfig.java</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../build/classes/java/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../build/generated/sources/annotationProcessor/java/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../build/generated/sources/annotationProcessor/java/main" isTestSource="false" generated="true" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.projectlombok:lombok:1.18.22" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.servlet:javax.servlet-api:4.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-webmvc:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-context:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-jdbc:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: com.zaxxer:HikariCP:5.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.postgresql:postgresql:42.3.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.17.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.17.0" level="project" />
+    <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.13.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-aop:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-web:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-beans:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-expression:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-core:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-tx:5.3.14" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.30" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.13.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.13.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-jcl:5.3.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.checkerframework:checker-qual:3.5.0" level="project" />
+  </component>
+</module>

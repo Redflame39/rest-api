@@ -56,15 +56,15 @@ public class CertificateServiceImpl implements CertificateService {
     public Certificate update(Long updateId, CertificateDto replacement) {
         String currentDate = ZonedDateTime.now().format(FORMATTER);
         replacement.setLastUpdateDate(currentDate);
-        Optional<Certificate> old = findById(updateId);
-        if (!old.isPresent()) {
-            throw new EntityNotFoundException("Cannot find entity to update");
-        }
         boolean updated = certificateDao.update(updateId, replacement);
         if (!updated) {
             throw new EntityNotUpdatedException("Update wasn't carried out");
         }
-        return old.get();
+        Optional<Certificate> upd = certificateDao.findById(updateId);
+        if (!upd.isPresent()) {
+            throw new EntityNotFoundException("Cannot found certificate, id: " + updateId);
+        }
+        return upd.get();
     }
 
     @Override
