@@ -1,6 +1,8 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.api.TagDao;
+import com.epam.esm.converter.TagToTagDtoConverter;
+import com.epam.esm.repository.api.TagRepository;
+import com.epam.esm.exception.EntityNotCreatedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.exception.EntityNotUpdatedException;
 import com.epam.esm.model.dto.TagDto;
@@ -11,42 +13,63 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TagServiceImpl implements TagService {
 
-    private final TagDao<Long> dao;
+    private final TagRepository<Long> repository;
 
     @Autowired
-    public TagServiceImpl(TagDao<Long> dao) {
-        this.dao = dao;
+    public TagServiceImpl(TagRepository<Long> dao) {
+        this.repository = dao;
     }
 
     @Override
-    public boolean create(TagDto tag) {
-        return dao.create(tag);
-    }
-
-    @Override
-    public List<Tag> findAll() {
-        return dao.findAll();
-    }
-
-    @Override
-    public Optional<Tag> findById(Long id) {
-        return dao.findById(id);
-    }
-
-    @Override
-    public Tag delete(Long deleteId) {
-        Optional<Tag> old = findById(deleteId);
-        if (!old.isPresent()) {
-            throw new EntityNotFoundException("Cannot find entity to delete");
+    public TagDto create(TagDto tag) {
+        Long id = repository.create(tag);
+        Optional<Tag> created = repository.findById(id);
+        if (!created.isPresent()) {
+            throw new EntityNotCreatedException("Cannot find created tag");
         }
-        boolean deleted = dao.delete(deleteId);
+        TagToTagDtoConverter converter = new TagToTagDtoConverter();
+        return converter.convert(created.get());
+    }
+
+    @Override
+    public List<TagDto> findAll() {
+        List<Tag> tags = repository.findAll();
+        TagToTagDtoConverter converter = new TagToTagDtoConverter();
+        return tags.stream()
+                .map(converter::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TagDto> findByCertificateId(Long id) {
+        List<Tag> tags = repository.findByCertificateId(id);
+        TagToTagDtoConverter converter = new TagToTagDtoConverter();
+        return tags.stream()
+                .map(converter::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public TagDto findById(Long id) {
+        Optional<Tag> tag = repository.findById(id);
+        Tag item = tag.orElseThrow(
+                () -> new EntityNotFoundException("Tag with id " + id + " cannot be found"));
+        TagToTagDtoConverter converter = new TagToTagDtoConverter();
+        return converter.convert(item);
+    }
+
+    @Override
+    public TagDto delete(Long deleteId) {
+        TagDto old = findById(deleteId);
+        boolean deleted = repository.delete(deleteId);
         if (!deleted) {
-            throw new EntityNotUpdatedException("Delete wasn't carried out");
+            throw new EntityNotUpdatedException("Tag deleting wasn't carried out");
         }
-        return old.get();
+        return old;
     }
 }

@@ -1,82 +1,129 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.api.CertificateDao;
-import com.epam.esm.dao.api.TagDao;
+import com.epam.esm.converter.CertificateToCertificateDtoConverter;
+import com.epam.esm.repository.Specification;
+import com.epam.esm.repository.api.CertificateRepository;
+import com.epam.esm.repository.api.CertificateTagRepository;
+import com.epam.esm.repository.api.TagRepository;
+import com.epam.esm.exception.EntityNotCreatedException;
 import com.epam.esm.exception.EntityNotFoundException;
 import com.epam.esm.exception.EntityNotUpdatedException;
 import com.epam.esm.model.dto.CertificateDto;
+import com.epam.esm.model.dto.CreatingCertificateDto;
+import com.epam.esm.model.dto.TagDto;
+import com.epam.esm.model.dto.UpdatingCertificateDto;
 import com.epam.esm.model.entity.Certificate;
+import com.epam.esm.model.entity.OrderType;
+import com.epam.esm.model.entity.SortType;
+import com.epam.esm.model.entity.Tag;
+import com.epam.esm.repository.specification.SpecificationCreator;
 import com.epam.esm.service.api.CertificateService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CertificateServiceImpl implements CertificateService {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSSXXX");
-    private final CertificateDao<Long> certificateDao;
-    private final TagDao<Long> tagDao;
-
-    @Autowired
-    public CertificateServiceImpl(CertificateDao<Long> certificateDao, TagDao<Long> tagDao) {
-        this.certificateDao = certificateDao;
-        this.tagDao = tagDao;
-    }
+    private final CertificateRepository<Long> certificateRepository;
+    private final TagRepository<Long> tagRepository;
+    private final CertificateTagRepository<Long> certificateTagRepository;
 
     @Override
-    public boolean create(CertificateDto certificate) {
-        String currentDate = ZonedDateTime.now().format(FORMATTER);
-        certificate.setCreateDate(currentDate);
-        certificate.setLastUpdateDate(currentDate);
-        boolean created = certificateDao.create(certificate);
-        if (created) {
-            certificate.getTags().forEach(tagDao::create);
-            return true;
-        } else {
-            return false;
+    @Transactional
+    public CertificateDto create(CreatingCertificateDto certificate) {
+        Long id = certificateRepository.create(certificate);
+        if (certificate.getTags() != null) {
+            for (TagDto tag : certificate.getTags()) {
+                Optional<Tag> toAdd = tagRepository.findByName(tag.getName());
+                if (!toAdd.isPresent()) {
+                    Long tagId = tagRepository.create(tag);
+                    tag.setId(tagId);
+                }
+                Tag t = toAdd.get();
+                tag.setId(t.getId());
+            }
+            boolean tagsAdded = certificateTagRepository.addTags(id, certificate.getTags());
+            if (!tagsAdded) {
+                throw new EntityNotCreatedException("Entity creating transaction failed on tags creation");
+            }
         }
+        Optional<Certificate> created = certificateRepository.findById(id);
+        Certificate item = created.orElseThrow(() -> new EntityNotCreatedException("Cannot find created entity"));
+        CertificateToCertificateDtoConverter converter = new CertificateToCertificateDtoConverter();
+        return converter.convert(item);
     }
 
     @Override
-    public List<Certificate> findAll() {
-        return certificateDao.findAll();
+    public List<CertificateDto> findAll(String tagName, String name, String description, SortType sort, OrderType order) {
+        SpecificationCreator specificationCreator = new SpecificationCreator();
+        Specification findSpecification =
+                specificationCreator.createSpecification(name, description, tagName, sort, order);
+        List<Certificate> certificates = certificateRepository.findBySpecification(findSpecification);
+        for (Certificate c : certificates) {
+            List<Tag> tags = tagRepository.findByCertificateId(c.getId());
+            c.setTags(tags);
+        }
+        CertificateToCertificateDtoConverter converter = new CertificateToCertificateDtoConverter();
+        return certificates.stream()
+                .map(converter::convert)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Certificate> findById(Long id) {
-        return certificateDao.findById(id);
+    public CertificateDto findById(Long id) {
+        Optional<Certificate> certificate = certificateRepository.findById(id);
+        Certificate item = certificate.orElseThrow(
+                () -> new EntityNotFoundException("Cannot find certificate with id " + id));
+        List<Tag> certificateTags = tagRepository.findByCertificateId(item.getId());
+        item.setTags(certificateTags);
+        CertificateToCertificateDtoConverter converter = new CertificateToCertificateDtoConverter();
+        return converter.convert(item);
     }
 
     @Override
-    public Certificate update(Long updateId, CertificateDto replacement) {
-        String currentDate = ZonedDateTime.now().format(FORMATTER);
-        replacement.setLastUpdateDate(currentDate);
-        boolean updated = certificateDao.update(updateId, replacement);
+    @Transactional
+    public CertificateDto update(Long updateId, UpdatingCertificateDto replacement) {
+        Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now().toLocalDateTime());
+        replacement.setLastUpdateDate(currentTime);
+        boolean updated = certificateRepository.update(updateId, replacement);
         if (!updated) {
             throw new EntityNotUpdatedException("Update wasn't carried out");
         }
-        Optional<Certificate> upd = certificateDao.findById(updateId);
-        if (!upd.isPresent()) {
-            throw new EntityNotFoundException("Cannot found certificate, id: " + updateId);
+        if (replacement.getTags() != null) {
+            for (TagDto tag : replacement.getTags()) {
+                Optional<Tag> t = tagRepository.findByName(tag.getName());
+                if (!t.isPresent()) {
+                    Long id = tagRepository.create(tag);
+                    tag.setId(id);
+                } else {
+                    tag.setId(t.get().getId());
+                }
+            }
+            certificateTagRepository.clearTags(updateId);
+            boolean added = certificateTagRepository.addTags(updateId, replacement.getTags());
+            if (!added) {
+                throw new EntityNotUpdatedException("Failed to update entity: error while updating tags");
+            }
         }
-        return upd.get();
+        return findById(updateId);
     }
 
     @Override
-    public Certificate delete(Long deleteId) {
-        Optional<Certificate> old = findById(deleteId);
-        if (!old.isPresent()) {
-            throw new EntityNotFoundException("Cannot find entity to delete");
-        }
-        boolean deleted = certificateDao.delete(deleteId);
+    public CertificateDto delete(Long deleteId) {
+        CertificateDto old = findById(deleteId);
+        boolean deleted = certificateRepository.delete(deleteId);
         if (!deleted) {
             throw new EntityNotUpdatedException("Delete wasn't carried out");
         }
-        return old.get();
+        return old;
     }
 }

@@ -2,25 +2,28 @@ package com.epam.esm.model.entity;
 
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
-@Value
+@Data
 @Builder
+@EqualsAndHashCode
+@ToString
 public class Certificate {
 
     Long id;
 
-    double price;
+    Double price;
 
-    int duration;
+    Integer duration;
 
     String name;
 
     String description;
 
-    String createDate;
+    Timestamp createDate;
 
-    String lastUpdateDate;
+    Timestamp lastUpdateDate;
 
     List<Tag> tags;
 

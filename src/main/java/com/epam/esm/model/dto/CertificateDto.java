@@ -1,20 +1,23 @@
 package com.epam.esm.model.dto;
 
-import com.epam.esm.model.entity.Tag;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
 @Data
 @Builder
+@EqualsAndHashCode
+@ToString
 public class CertificateDto {
 
     Long id;
 
-    double price;
+    Double price;
 
-    int duration;
+    Integer duration;
 
     String name;
 

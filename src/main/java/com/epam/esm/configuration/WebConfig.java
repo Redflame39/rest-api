@@ -3,19 +3,19 @@ package com.epam.esm.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.bind.WebDataBinder;
 
@@ -25,9 +25,10 @@ import javax.sql.DataSource;
 @EnableWebMvc
 @ComponentScan("com.epam.esm")
 @PropertySource("classpath:db/config.properties")
+@EnableTransactionManagement
 public class WebConfig implements WebMvcConfigurer {
 
-    private final String PROPERTY_MESSAGE = "property/message";
+    private final String PROPERTY_MESSAGE = "property/messages";
     private final String UTF_8 = "UTF-8";
 
     @Value("${db.url}")
@@ -59,13 +60,14 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
+    @Scope("singleton")
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setUrl(url);
-        dataSource.setUsername(user);
-        dataSource.setPassword(password);
-        return dataSource;
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName(driverClassName);
+        ds.setUrl(url);
+        ds.setUsername(user);
+        ds.setPassword(password);
+        return ds;
     }
 
     @Bean
@@ -86,6 +88,13 @@ public class WebConfig implements WebMvcConfigurer {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
+        dataSourceTransactionManager.setDataSource(dataSource());
+        return dataSourceTransactionManager;
     }
 
 }
