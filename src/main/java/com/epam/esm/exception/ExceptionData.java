@@ -11,7 +11,9 @@ public class ExceptionData {
 
     String name;
 
-    String message;
+    String titleMessage;
+
+    String exceptionMessage;
 
     Integer code;
 

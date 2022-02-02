@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,8 +74,6 @@ class CertificateRepositoryTest {
         String newName = "Name";
         UpdatingCertificateDto dto = new UpdatingCertificateDto();
         dto.setName(newName);
-        Timestamp tempDate = Timestamp.valueOf(LocalDateTime.now());
-        dto.setLastUpdateDate(tempDate);
         boolean updated = repository.update(updateId, dto);
         assertTrue(updated);
     }
@@ -88,8 +84,6 @@ class CertificateRepositoryTest {
         String newName = "Name";
         UpdatingCertificateDto dto = new UpdatingCertificateDto();
         dto.setName(newName);
-        Timestamp tempDate = Timestamp.valueOf(LocalDateTime.now());
-        dto.setLastUpdateDate(tempDate);
         Optional<Certificate> oldCertificate = repository.findById(updateId);
         String oldName = oldCertificate.get().getName();
         repository.update(updateId, dto);
@@ -104,8 +98,6 @@ class CertificateRepositoryTest {
         String newName = "Name";
         UpdatingCertificateDto dto = new UpdatingCertificateDto();
         dto.setName(newName);
-        Timestamp tempDate = Timestamp.valueOf(LocalDateTime.now());
-        dto.setLastUpdateDate(tempDate);
         repository.update(updateId, dto);
         Optional<Certificate> certificateAfterUpdating = repository.findById(updateId);
         String nameAfterUpdating = certificateAfterUpdating.get().getName();

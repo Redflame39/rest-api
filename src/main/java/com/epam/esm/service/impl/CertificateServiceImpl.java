@@ -23,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,7 +55,8 @@ public class CertificateServiceImpl implements CertificateService {
             }
         }
         Optional<Certificate> created = certificateRepository.findById(id);
-        Certificate item = created.orElseThrow(() -> new EntityNotCreatedException("Cannot find created entity"));
+        Certificate item = created.orElseThrow(
+                () -> new EntityNotCreatedException("Cannot find created entity, id " + id));
         CertificateToCertificateDtoConverter converter = new CertificateToCertificateDtoConverter();
         return converter.convert(item);
     }
@@ -92,11 +91,9 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional
     public CertificateDto update(Long updateId, UpdatingCertificateDto replacement) {
-        Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now().toLocalDateTime());
-        replacement.setLastUpdateDate(currentTime);
         boolean updated = certificateRepository.update(updateId, replacement);
         if (!updated) {
-            throw new EntityNotUpdatedException("Update wasn't carried out");
+            throw new EntityNotUpdatedException("Update wasn't carried out, update id " + updateId);
         }
         if (replacement.getTags() != null) {
             for (TagDto tag : replacement.getTags()) {
@@ -111,7 +108,8 @@ public class CertificateServiceImpl implements CertificateService {
             certificateTagRepository.clearTags(updateId);
             boolean added = certificateTagRepository.addTags(updateId, replacement.getTags());
             if (!added) {
-                throw new EntityNotUpdatedException("Failed to update entity: error while updating tags");
+                throw new EntityNotUpdatedException("Failed to update entity: error while updating tags. Entity id " +
+                        updateId);
             }
         }
         return findById(updateId);
@@ -122,7 +120,7 @@ public class CertificateServiceImpl implements CertificateService {
         CertificateDto old = findById(deleteId);
         boolean deleted = certificateRepository.delete(deleteId);
         if (!deleted) {
-            throw new EntityNotUpdatedException("Delete wasn't carried out");
+            throw new EntityNotUpdatedException("Delete wasn't carried out, delete id " + deleteId);
         }
         return old;
     }

@@ -6,8 +6,6 @@ import com.epam.esm.model.dto.CreatingCertificateDto;
 import com.epam.esm.model.dto.UpdatingCertificateDto;
 import com.epam.esm.model.entity.Certificate;
 import com.epam.esm.repository.api.CertificateRepository;
-import com.epam.esm.repository.api.CertificateTagRepository;
-import com.epam.esm.repository.api.TagRepository;
 import com.epam.esm.service.impl.CertificateServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,12 +36,6 @@ class CertificateServiceTest {
 
     @Mock
     private CertificateRepository<Long> certificateRepository;
-
-    @Mock
-    private TagRepository<Long> tagRepository;
-
-    @Mock
-    private CertificateTagRepository<Long> certificateTagRepository;
 
     private MockitoSession session;
 

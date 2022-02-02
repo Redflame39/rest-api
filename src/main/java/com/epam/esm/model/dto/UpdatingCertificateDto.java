@@ -20,8 +20,6 @@ public class UpdatingCertificateDto {
 
     String description;
 
-    Timestamp lastUpdateDate;
-
     List<TagDto> tags;
 
 }

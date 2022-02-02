@@ -3,7 +3,6 @@ package com.epam.esm.converter;
 import com.epam.esm.model.dto.CertificateDto;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.model.entity.Certificate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 

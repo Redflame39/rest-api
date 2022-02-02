@@ -67,7 +67,6 @@ public class CertificateRepositoryImpl implements CertificateRepository<Long> {
                 replacement.getDescription(),
                 replacement.getPrice(),
                 replacement.getDuration(),
-                replacement.getLastUpdateDate(),
                 updateId);
 
         return affectedRows > 0;

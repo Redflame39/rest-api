@@ -30,7 +30,7 @@ public class TagServiceImpl implements TagService {
         Long id = repository.create(tag);
         Optional<Tag> created = repository.findById(id);
         if (!created.isPresent()) {
-            throw new EntityNotCreatedException("Cannot find created tag");
+            throw new EntityNotCreatedException("Cannot find created tag, id " + id);
         }
         TagToTagDtoConverter converter = new TagToTagDtoConverter();
         return converter.convert(created.get());
@@ -68,7 +68,7 @@ public class TagServiceImpl implements TagService {
         TagDto old = findById(deleteId);
         boolean deleted = repository.delete(deleteId);
         if (!deleted) {
-            throw new EntityNotUpdatedException("Tag deleting wasn't carried out");
+            throw new EntityNotUpdatedException("Tag deleting wasn't carried out. id " + deleteId);
         }
         return old;
     }

@@ -24,34 +24,37 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = EntityNotCreatedException.class)
     protected ResponseEntity<Object> handleNotCreated(EntityNotCreatedException exception, WebRequest request) {
+        log.error("Caught an EntityNotCreatedException, error code 400", exception);
         String message = messageSource.getMessage("exception.not-created", new Object[]{}, request.getLocale());
-        ExceptionData exceptionData = new ExceptionData(HttpStatus.NOT_MODIFIED.getReasonPhrase(), message,
-                HttpStatus.NOT_MODIFIED.value());
+        ExceptionData exceptionData = new ExceptionData(HttpStatus.BAD_REQUEST.getReasonPhrase(), message,
+                exception.getMessage(), HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(exceptionData, new HttpHeaders(), HttpStatus.NOT_MODIFIED);
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)
     protected ResponseEntity<Object> handleNotFound(EntityNotFoundException exception, WebRequest request) {
+        log.error("Caught an EntityNotFoundException, error code 404", exception);
         String message = messageSource.getMessage("exception.not-found", new Object[]{}, request.getLocale());
         ExceptionData exceptionData = new ExceptionData(HttpStatus.NOT_FOUND.getReasonPhrase(), message,
-                HttpStatus.NOT_FOUND.value());
+                exception.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(exceptionData, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = EntityNotUpdatedException.class)
     protected ResponseEntity<Object> handleNotUpdated(EntityNotUpdatedException exception, WebRequest request) {
+        log.error("Caught an EntityNotUpdatedException, error code 400", exception);
         String message = messageSource.getMessage("exception.not-updated", new Object[]{}, request.getLocale());
-        ExceptionData exceptionData = new ExceptionData(HttpStatus.NOT_MODIFIED.getReasonPhrase(), message,
-                HttpStatus.NOT_MODIFIED.value());
+        ExceptionData exceptionData = new ExceptionData(HttpStatus.BAD_REQUEST.getReasonPhrase(), message,
+                exception.getMessage(), HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(exceptionData, new HttpHeaders(), HttpStatus.NOT_MODIFIED);
     }
 
     @ExceptionHandler(value = Throwable.class)
     public ResponseEntity<Object> handleGeneric(Throwable exception, WebRequest request) {
-        log.error(exception);
+        log.error("Caught an exception, error code 400", exception);
         String message = messageSource.getMessage("exception.generic", new Object[]{}, request.getLocale());
         ExceptionData exceptionData = new ExceptionData(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), message,
-                HttpStatus.INTERNAL_SERVER_ERROR.value());
+                exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(exceptionData, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
