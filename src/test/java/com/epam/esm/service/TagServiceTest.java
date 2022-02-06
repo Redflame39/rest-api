@@ -59,6 +59,7 @@ class TagServiceTest {
         TagDto expected = tagDto;
         TagDto actual = service.create(tagDto);
         assertEquals(expected, actual);
+        verify(tagRepository, times(1)).create(tagDto);
     }
 
     @Test
@@ -81,6 +82,7 @@ class TagServiceTest {
                 .collect(Collectors.toList());
         List<TagDto> actual = service.findAll();
         assertEquals(expected, actual);
+        verify(tagRepository, times(1)).findAll();
     }
 
     @Test
@@ -102,6 +104,7 @@ class TagServiceTest {
                 .collect(Collectors.toList());
         List<TagDto> actual = service.findByCertificateId(100L);
         assertEquals(expected, actual);
+        verify(tagRepository, times(1)).findByCertificateId(100L);
     }
 
     @Test
@@ -115,6 +118,7 @@ class TagServiceTest {
         TagDto expected = converter.convert(tag);
         TagDto actual = service.findById(100L);
         assertEquals(expected, actual);
+        verify(tagRepository, times(1)).findById(100L);
     }
 
     @Test
@@ -129,5 +133,6 @@ class TagServiceTest {
         TagDto expected = converter.convert(tag);
         TagDto actual = service.delete(100L);
         assertEquals(expected, actual);
+        verify(tagRepository, times(1)).delete(100L);
     }
 }

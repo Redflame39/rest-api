@@ -3,7 +3,6 @@ package com.epam.esm.repository.impl;
 import com.epam.esm.repository.CertificateQuery;
 import com.epam.esm.repository.Specification;
 import com.epam.esm.repository.api.CertificateRepository;
-import com.epam.esm.model.dto.CreatingCertificateDto;
 import com.epam.esm.model.dto.UpdatingCertificateDto;
 import com.epam.esm.model.entity.Certificate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class CertificateRepositoryImpl implements CertificateRepository<Long> {
     }
 
     @Override
-    public Long create(CreatingCertificateDto certificate) {
+    public Long create(UpdatingCertificateDto certificate) {
         Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now().toLocalDateTime());
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", certificate.getName());

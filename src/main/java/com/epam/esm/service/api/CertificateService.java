@@ -1,7 +1,6 @@
 package com.epam.esm.service.api;
 
 import com.epam.esm.model.dto.CertificateDto;
-import com.epam.esm.model.dto.CreatingCertificateDto;
 import com.epam.esm.model.dto.UpdatingCertificateDto;
 import com.epam.esm.model.entity.OrderType;
 import com.epam.esm.model.entity.SortType;
@@ -20,7 +19,7 @@ public interface CertificateService {
      * @return the certificate dto with its dates and id.
      * @throws com.epam.esm.exception.EntityNotCreatedException when certificate cannot be created.
      */
-    CertificateDto create(CreatingCertificateDto certificate);
+    CertificateDto create(UpdatingCertificateDto certificate);
 
     /**
      * Finds all certificates by optional query params and returns list of CertificateDto.

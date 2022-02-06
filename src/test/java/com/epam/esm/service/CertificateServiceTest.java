@@ -2,7 +2,6 @@ package com.epam.esm.service;
 
 import com.epam.esm.converter.CertificateToCertificateDtoConverter;
 import com.epam.esm.model.dto.CertificateDto;
-import com.epam.esm.model.dto.CreatingCertificateDto;
 import com.epam.esm.model.dto.UpdatingCertificateDto;
 import com.epam.esm.model.entity.Certificate;
 import com.epam.esm.repository.api.CertificateRepository;
@@ -61,7 +60,7 @@ class CertificateServiceTest {
 
     @Test
     void createTest() {
-        CreatingCertificateDto createData = new CreatingCertificateDto();
+        UpdatingCertificateDto createData = new UpdatingCertificateDto();
         createData.setName("name");
         createData.setDescription("qwe");
         createData.setPrice(2345.0);
@@ -87,17 +86,19 @@ class CertificateServiceTest {
         actual.setCreateDate(null);
         actual.setLastUpdateDate(null);
         assertEquals(expected, actual);
+        verify(certificateRepository, times(1)).create(createData);
     }
 
     @Test
     void createThrowsWhenNoRequiredFieldsPassedTest() {
-        CreatingCertificateDto createData = new CreatingCertificateDto();
+        UpdatingCertificateDto createData = new UpdatingCertificateDto();
         createData.setDescription("qwe");
         createData.setPrice(2345.0);
         createData.setDuration(234);
         when(certificateRepository.create(createData))
                 .thenThrow(DataIntegrityViolationException.class);
         assertThrows(DataIntegrityViolationException.class, () -> service.create(createData));
+        verify(certificateRepository, times(1)).create(createData);
     }
 
     @Test
@@ -132,13 +133,14 @@ class CertificateServiceTest {
                 .build();
         List<Certificate> certificateDtoList = new ArrayList<>();
         Collections.addAll(certificateDtoList, certificateName, certificateCert, certificateAnother);
-        when(certificateRepository.findBySpecification(Mockito.any()))
+        when(certificateRepository.findBySpecification(any()))
                 .thenReturn(certificateDtoList);
         List<CertificateDto> expected = certificateDtoList.stream()
                 .map(converter::convert)
                 .collect(Collectors.toList());
         List<CertificateDto> actual = service.findAll(null, null, null, null, null);
         assertEquals(actual, expected);
+        verify(certificateRepository, times(1)).findBySpecification(any());
     }
 
     @Test
@@ -158,6 +160,7 @@ class CertificateServiceTest {
         CertificateDto expected= converter.convert(certificate);
         CertificateDto actual = service.findById(100L);
         assertEquals(expected, actual);
+        verify(certificateRepository, times(1)).findById(100L);
     }
 
     @Test
@@ -181,6 +184,7 @@ class CertificateServiceTest {
         CertificateDto expected = converter.convert(certificate);
         CertificateDto actual = service.update(100L, dto);
         assertEquals(expected, actual);
+        verify(certificateRepository, times(1)).update(100L, dto);
     }
 
     @Test
@@ -202,5 +206,6 @@ class CertificateServiceTest {
         CertificateDto expected = converter.convert(deleted);
         CertificateDto actual = service.delete(100L);
         assertEquals(expected, actual);
+        verify(certificateRepository, times(1)).delete(100L);
     }
 }

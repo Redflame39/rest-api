@@ -1,7 +1,6 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.model.dto.CertificateDto;
-import com.epam.esm.model.dto.CreatingCertificateDto;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.model.dto.UpdatingCertificateDto;
 import com.epam.esm.model.entity.OrderType;
@@ -47,7 +46,7 @@ public class CertificateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CertificateDto create(@RequestBody CreatingCertificateDto certificate) {
+    public CertificateDto create(@RequestBody UpdatingCertificateDto certificate) {
         CertificateDto created = certificateService.create(certificate);
         List<TagDto> tags = tagService.findByCertificateId(created.getId());
         created.setTags(tags);

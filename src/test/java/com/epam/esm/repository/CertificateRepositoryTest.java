@@ -1,7 +1,6 @@
 package com.epam.esm.repository;
 
 import com.epam.esm.configuration.DBTestConfig;
-import com.epam.esm.model.dto.CreatingCertificateDto;
 import com.epam.esm.model.dto.TagDto;
 import com.epam.esm.model.dto.UpdatingCertificateDto;
 import com.epam.esm.model.entity.Certificate;
@@ -54,7 +53,7 @@ class CertificateRepositoryTest {
 
     @Test
     void createTest() {
-        CreatingCertificateDto dto = new CreatingCertificateDto();
+        UpdatingCertificateDto dto = new UpdatingCertificateDto();
         dto.setName("qwe");
         dto.setDescription("desc");
         dto.setDuration(456);

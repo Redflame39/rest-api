@@ -11,8 +11,8 @@ public final class CertificateQuery {
                     "                gift_certificate.last_update_date, " +
                     "                gift_certificate.duration " +
                     "from gift_certificate" +
-                    "         JOIN certificate_tags ct on gift_certificate.id = ct.certificate_id " +
-                    "         JOIN tag ON ct.tag_id = tag.id " +
+                    "         LEFT OUTER JOIN certificate_tags ct on gift_certificate.id = ct.certificate_id " +
+                    "         LEFT OUTER JOIN tag ON ct.tag_id = tag.id " +
                     "WHERE 1 = 1 ";
 
     public static final String SQL_FIND_ID =

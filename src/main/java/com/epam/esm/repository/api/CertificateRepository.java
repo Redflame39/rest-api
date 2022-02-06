@@ -1,7 +1,6 @@
 package com.epam.esm.repository.api;
 
 import com.epam.esm.repository.CertificateColumnName;
-import com.epam.esm.model.dto.CreatingCertificateDto;
 import com.epam.esm.model.dto.UpdatingCertificateDto;
 import com.epam.esm.model.entity.Certificate;
 import com.epam.esm.repository.Specification;
@@ -46,7 +45,7 @@ public interface CertificateRepository<K> {
      * @param certificate the certificate to be created.
      * @return the id of created certificate.
      */
-    K create(CreatingCertificateDto certificate);
+    K create(UpdatingCertificateDto certificate);
 
     /**
      * Update certificate with given id. Updates only fields which is set to non-null in {@code UpdatingCertificateDto}.
